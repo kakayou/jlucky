@@ -1,11 +1,8 @@
-import requests
-from lxml import etree
-url = "http://datachart.500.com/ssq/history/newinc/history.php?start=00001&end=18081"
-response = requests.get(url)
-response = response.text
-selector = etree.HTML(response)
-for i in selector.xpath('//tr[@class="t_tr1"]'):
-    datetime = i.xpath('td/text()')[0]
-    red = i.xpath('td/text()')[1:7]
-    blue = i.xpath('td/text()')[7]
-    print(datetime,red,blue)
+import mysql.luckydb as db
+
+# get clean data from t_data
+
+
+
+# infer the relationship fo red
+
