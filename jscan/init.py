@@ -17,7 +17,7 @@ history = luckydb.t_facility_reds()
 
 for j in reds:
     # 最大的red1=3 red2=4
-    if j[0] !=3:
+    if j[0] != 3:
         continue
     if j[1] != 4:
         continue
