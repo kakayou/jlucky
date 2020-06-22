@@ -1,6 +1,6 @@
 import pymysql
 
-mysql_ip="192.168.119.137"
+mysql_ip="localhost"
 
 def t_base_insert(args=None):
     """初始化t_base"""
@@ -26,7 +26,7 @@ def t_facility_insert(args=None):
         args = ()
     db = pymysql.connect(mysql_ip, "lucky", "lucky", "lucky")
     cursor = db.cursor()
-    sql = "INSERT INTO t_facility (term, red1, red2, red3, red4, red5, red6, blue) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') "
+    sql = "INSERT INTO t_facility (term, red1, red2, red3, red4, red5, red6, blue) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
     try:
         cursor.executemany(sql, args)
         db.commit()
@@ -62,24 +62,24 @@ def t_facility_reds():
     try:
         cursor.execute(sql)
         result = cursor.fetchall()
-    except  Exception as e:
+    except Exception as e:
         print(e.args)
     cursor.close()
     db.close()
     new = list()
     for x in result:
-        new.append((int(x[0]),int(x[1]),int(x[2]),int(x[3]),int(x[4]),int(x[5])))
+        new.append((int(x[0]), int(x[1]), int(x[2]), int(x[3]), int(x[4]), int(x[5])))
     return new
 
 def t_facility_group_term():
-    "get term"
+    """get term"""
     db = pymysql.connect(mysql_ip, "lucky", "lucky", "lucky")
     cursor = db.cursor()
     sql = "select count(*) as termCount,blue from t_facility GROUP BY blue ORDER by termCount desc"
     try:
         cursor.execute(sql)
         result = cursor.fetchall()
-    except  Exception as e:
+    except Exception as e:
         print(e.args)
     cursor.close()
     db.close()
@@ -87,7 +87,7 @@ def t_facility_group_term():
 
 
 def t_query_by_SQL(sql):
-    "get term"
+    """get term"""
     db = pymysql.connect(mysql_ip, "lucky", "lucky", "lucky")
     cursor = db.cursor()
     try:
