@@ -1,4 +1,6 @@
 from itertools import combinations, permutations
+from random import random
+
 import mysql.luckydb as luckydb
 
 data = list()
@@ -10,18 +12,14 @@ while counter < 34:
     counter += 1
 reds = list(combinations(arr, 6))
 
-# set blue 12
-
-blue = 15
 history = luckydb.t_facility_reds()
 
+red1 = random.choice([1,2,3,4,5])
 for j in reds:
     # 最大的red1=3 red2=4
-    if j[0] != 3:
+    if j[0] != red1:
         continue
-    if j[1] != 4:
-        continue
-    if j[2] < 12:
+    if j in history:
         continue
 
     if j[5] != 26:
