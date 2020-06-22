@@ -6,11 +6,12 @@ class TestCrawler(unittest.TestCase):
 
     def test_latest_term(self):
         term = crawler.latest_term()
-        self.assertGreaterEqual(20013)
+        print(term)
+        self.assertGreaterEqual(int(term), 20044)
 
     def test_crawler_data(self):
-        data = crawler.crawler_data("20000", "20013")
-        self.assertCountEqual(data.count(), 1)
+        data = crawler.crawler_data("20000", "20044")
+        print(data)
 
 
 if __name__ == '__main__':
