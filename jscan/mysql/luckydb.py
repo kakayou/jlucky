@@ -1,6 +1,6 @@
 import pymysql
 
-mysql_ip="localhost"
+mysql_ip="192.168.119.136"
 
 def t_base_insert(args=None):
     """初始化t_base"""
@@ -57,7 +57,7 @@ def t_facility_reds():
     """get t_facility"""
     db = pymysql.connect(mysql_ip, "lucky", "lucky", "lucky")
     cursor = db.cursor()
-    sql = "SELECT red1, red2, red3, red4, red5, red6 FROM t_facility"
+    sql = "SELECT red1, red2, red3, red4, red5, red6 FROM t_facility ORDER by term desc"
     result = ()
     try:
         cursor.execute(sql)
@@ -84,7 +84,6 @@ def t_facility_group_term():
     cursor.close()
     db.close()
     return result
-
 
 def t_query_by_SQL(sql):
     """get term"""
