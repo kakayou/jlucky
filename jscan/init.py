@@ -1,7 +1,9 @@
 from itertools import combinations, permutations
-from random import random
-
-import mysql.luckydb as luckydb
+import random
+import Levenshtein
+import mysql.t_facility as fc
+import mysql.t_base as tb
+import common.arithmetics as arith
 
 data = list()
 arr = []
@@ -11,44 +13,39 @@ while counter < 34:
     arr.append(counter)
     counter += 1
 reds = list(combinations(arr, 6))
+history = fc.t_facility_reds()
 
-history = luckydb.t_facility_reds()
 
-red1 = random.choice([1,2,3,4,5])
+red1 = random.randint(1,5)
+while red1 == history[0][0]:
+    red1 = random.randint(1,5)
+
+blue=12
 for j in reds:
     # 最大的red1=3 red2=4
     if j[0] != red1:
         continue
     if j in history:
         continue
-
-    if j[5] != 26:
+    total = sum(j)
+    if total < 80 or total > 120:
         continue
-    if j[4] == 25:
+    if arith.list_continue_maxlen(list(j)) > 2:
         continue
-    if 21 in j:
+    if int(Levenshtein.distance(str(j), str(history[0]))) < 9:
         continue
-    if j[3] > 15:
+    if int(Levenshtein.distance(str(j), str(history[1]))) < 9:
         continue
-
-    #过滤等差数列
-    if j[2]-j[1]==j[3]-j[2] & j[3]-j[2]== j[4]-j[3]:
+    if int(Levenshtein.distance(str(j), str(history[2]))) < 9:
         continue
-
-    if j[1]-j[0]==j[2]-j[1] & j[2]-j[1]== j[3]-j[2] :
+    if len(set.intersection(set(j), set(history[0]))) > 1:
         continue
-
-    if j[3] - j[2] == j[4] - j[3] & j[4] - j[3] == j[5] - j[4]:
+    if len(set.intersection(set(j), set(history[1]))) > 1:
         continue
-
-
-
-    # 过滤掉已经出现的
-    if j in history:
+    if int(j[5]) < 30:
         continue
-    row = (j + (blue,))
     data.append(j + (blue,))
-
-luckydb.t_base_insert(data)
+tb.t_base_clear()
+tb.t_base_insert(data)
 
 
