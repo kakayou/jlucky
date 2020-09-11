@@ -1,51 +1,50 @@
-from itertools import combinations, permutations
-import random
-import Levenshtein
-import mysql.t_facility as fc
+from itertools import combinations
+
 import mysql.t_base as tb
 import common.arithmetics as arith
+import historyfilter as hf
 
 data = list()
 arr = []
-
 counter = 1
 while counter < 34:
     arr.append(counter)
     counter += 1
 reds = list(combinations(arr, 6))
-history = fc.t_facility_reds()
 
+# change rule
+blues = list()
+for i in range(17):
+    if i > 0:
+        blues.append(i)
 
-red1 = random.randint(1,5)
-while red1 == history[0][0]:
-    red1 = random.randint(1,5)
-
-blue=12
+dlist = hf.getDif()
 for j in reds:
-    # 最大的red1=3 red2=4
-    if j[0] != red1:
-        continue
-    if j in history:
-        continue
-    total = sum(j)
-    if total < 80 or total > 120:
-        continue
-    if arith.list_continue_maxlen(list(j)) > 2:
-        continue
-    if int(Levenshtein.distance(str(j), str(history[0]))) < 9:
-        continue
-    if int(Levenshtein.distance(str(j), str(history[1]))) < 9:
-        continue
-    if int(Levenshtein.distance(str(j), str(history[2]))) < 9:
-        continue
-    if len(set.intersection(set(j), set(history[0]))) > 1:
-        continue
-    if len(set.intersection(set(j), set(history[1]))) > 1:
-        continue
-    if int(j[5]) < 30:
-        continue
-    data.append(j + (blue,))
+    for blue in blues:
+
+        if blue in list(j):
+            continue
+        newOne = list(j + (int(blue),))
+
+        if arith.oddCount(newOne) != 4:
+            continue
+
+        if len(set.intersection(set(newOne), set(dlist))) < 1:
+            continue
+        if arith.list_continue_count(list(j)) != 0:
+            continue
+
+        if hf.filterList(newOne):
+            continue
+
+        if arith.list_continue_maxlen(list(j)) > 2:
+            continue
+        byBlue = hf.getHistoryBlue(blue)
+
+        if len(set.intersection(set(newOne), set(byBlue))) > 2:
+            continue
+        if arith.max_intersection(newOne, hf.history) > 4:
+            continue
+        data.append(j + (int(blue),))
 tb.t_base_clear()
 tb.t_base_insert(data)
-
-

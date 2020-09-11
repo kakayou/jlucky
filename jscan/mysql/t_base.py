@@ -1,4 +1,3 @@
-import pymysql
 import mysql.luckydb as db
 
 def t_base_insert(args=None):

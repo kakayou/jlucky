@@ -30,3 +30,21 @@ def t_sum_clear():
     cursor.close()
     con.close()
     return
+
+def t_sums():
+    """get t_facility"""
+    con = pymysql.connect()
+    cursor = con.cursor()
+    sql = "SELECT v_count, v_sum FROM t_sum ORDER by v_count desc"
+    result = ()
+    try:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    except Exception as e:
+        print(e.args)
+    cursor.close()
+    con.close()
+    new = list()
+    for x in result:
+        new.append((int(x[0]), int(x[1])))
+    return new
